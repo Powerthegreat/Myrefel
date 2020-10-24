@@ -38,6 +38,23 @@ class Account(commands.Cog):
 			myrefeldebug.DebugLog(f'{ctx.message.author} updated their name to {args[0]}')
 		else:
 			await ctx.send('You are not registered!')
+	
+	@commands.command(
+		name='account',
+		description='Displays an account\n@mention a user to view their account',
+		usage='[@Mention]'
+	)
+	async def account(self, ctx):
+		target = ctx.message.author
+		if len(ctx.message.mentions):
+			target = ctx.message.mentions[0]
+		
+		if len(self.bot.database.execute(f'SELECT Id FROM chars WHERE Id = {target.id};').fetchall()) > 0:
+			await ctx.send(embed=discord.Embed(colour=discord.Colour(int('8000FF', 16)),
+				title=self.bot.database.execute(f'SELECT Name FROM CHARS WHERE Id = {ctx.message.author.id}').fetchall()[0][0],
+				description=f'A citizen of Myrefel'))
+		else:
+			await ctx.send(f'{target.mention} is not registered!')
 
 def setup(bot):
 	bot.add_cog(Account(bot))
