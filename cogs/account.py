@@ -15,6 +15,7 @@ class Account(commands.Cog):
 	async def register(self, ctx):
 		if len(self.bot.database.execute(f'SELECT Id FROM chars WHERE Id=\'{ctx.message.author.id}\';').fetchall()) <= 0:
 			self.bot.database.execute(f'INSERT INTO chars (Id, Name) VALUES ({ctx.message.author.id}, \'{ctx.message.author.name}\');')
+			self.bot.database.commit()
 			myrefeldebug.DebugLog(f'{ctx.message.author} registered')
 			await ctx.send('Welcome to Myrefel!')
 		else:
@@ -32,6 +33,7 @@ class Account(commands.Cog):
 				return
 			
 			self.bot.database.execute(f'UPDATE chars SET Name = \'{args[0]}\' WHERE Id = {ctx.message.author.id};')
+			self.bot.database.commit()
 			await ctx.send(f'Updated your name to {args[0]}')
 			myrefeldebug.DebugLog(f'{ctx.message.author} updated their name to {args[0]}')
 		else:
