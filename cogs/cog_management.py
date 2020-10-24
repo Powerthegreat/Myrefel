@@ -1,4 +1,5 @@
 from discord.ext import commands
+import myrefeldebug
 import discord
 
 # Cogs-related commands
@@ -23,19 +24,19 @@ class Cogs(commands.Cog):
 			try:
 				self.bot.unload_extension('cogs.' + argstr)
 			except commands.ExtensionError as e:
-				print('Cog {} not loaded'.format(argstr))
+				myrefeldebug.DebugLog('Cog {} not loaded'.format(argstr))
 
 			self.bot.load_extension('cogs.' + argstr)
-			print('Cog cogs.{} reloaded'.format(argstr))
+			myrefeldebug.DebugLog('Cog cogs.{} reloaded'.format(argstr))
 			await ctx.send('Cog {} reloaded'.format(argstr))
 		else:
-			print('No cog specified')
+			myrefeldebug.DebugLog('No cog specified')
 			await ctx.send('No cog specified')
 
 	@reload_cog.error
 	async def reload_cog_error(self, ctx, error):
 		if isinstance(error, commands.NotOwner):
-			print('{} tried to reload a cog'.format(ctx.message.author))
+			myrefeldebug.DebugLog('{} tried to reload a cog'.format(ctx.message.author))
 
 def setup(bot):
 	bot.add_cog(Cogs(bot))

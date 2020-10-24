@@ -1,5 +1,6 @@
 from discord.ext import commands, tasks
 from itertools import cycle
+import myrefeldebug
 import discord
 import sqlite3
 import random
@@ -21,7 +22,7 @@ status = cycle([
 # Displays a message when the bot loads, and loads cogs
 @bot.event
 async def on_ready():
-	print(welcomeMessages[random.randint(0, len(welcomeMessages) - 1)])
+	myrefeldebug.DebugLog(welcomeMessages[random.randint(0, len(welcomeMessages) - 1)])
 	for cog in cogs:
 		bot.load_extension(cog)
 	status_cycle.start()
@@ -42,14 +43,15 @@ async def reload_all(ctx):
 		try:
 			bot.unload_extension(cog)
 		except commands.ExtensionNotLoaded as e:
-			print('Cog {} not loaded'.format(cog))
+			myrefeldebug.DebugLog(f'Cog {cog} not loaded')
 		bot.load_extension(cog)
-		print('Cog {} reloaded'.format(cog))
+		myrefeldebug.DebugLog(f'Cog {cog} reloaded')
+		await ctx.send(f'Cog {cog} reloaded')
 
 @reload_all.error
 async def reload_all_error(ctx, error):
 	if isinstance(error, commands.NotOwner):
-		print('{} tried to reload all cogs'.format(ctx.message.author))
+		myrefeldebug.DebugLog(f'{ctx.message.author} tried to reload all cogs')
 
 tokenFile = open('token')
 token = tokenFile.read()
