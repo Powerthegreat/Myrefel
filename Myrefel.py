@@ -1,11 +1,13 @@
 from discord.ext import commands, tasks
 from itertools import cycle
 import discord
+import sqlite3
 import random
 import help
 
 bot = commands.Bot(command_prefix = commands.when_mentioned_or('!'), help_command=help.Help())
-cogs = ['cogs.cog_management'
+cogs = ['cogs.cog_management',
+	'cogs.account'
 ]
 
 welcomeMessages = [
@@ -23,6 +25,9 @@ async def on_ready():
 	for cog in cogs:
 		bot.load_extension(cog)
 	status_cycle.start()
+	bot.database = sqlite3.connect('data/myrefel.sqlite')
+	bot.database.execute('CREATE TABLE IF NOT EXISTS chars (Id INT UNSIGNED NOT NULL, Name VARCHAR(255) NOT NULL DEFAULT \'\', PRIMARY KEY (Id));')
+	bot.database.commit()
 
 # Cycles through statuses	
 @tasks.loop(seconds=60)

@@ -19,7 +19,7 @@ class Cogs(commands.Cog):
 	@commands.is_owner()
 	async def reload_cog(self, ctx, *args):
 		if args:
-			argstr = "".join(args)
+			argstr = ''.join(args)
 			try:
 				self.bot.unload_extension('cogs.' + argstr)
 			except commands.ExtensionError as e:
