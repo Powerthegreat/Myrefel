@@ -13,7 +13,7 @@ class Account(commands.Cog):
 		aliases=['start']
 	)
 	async def register(self, ctx):
-		if len(self.bot.database.execute(f'SELECT Id FROM chars WHERE Id=\'{ctx.message.author.id}\';').fetchall()) <= 0:
+		if myrefeldebug.GetPlayerData(self, ctx.message.author.id) == None:
 			self.bot.database.execute(f'INSERT INTO chars (Id, Name) VALUES ({ctx.message.author.id}, \'{ctx.message.author.name}\');')
 			self.bot.database.commit()
 			myrefeldebug.DebugLog(f'{ctx.message.author} registered')
@@ -27,7 +27,7 @@ class Account(commands.Cog):
 		usage='<name>'
 	)
 	async def rename(self, ctx, *args):
-		if len(self.bot.database.execute(f'SELECT Id FROM chars WHERE Id = {ctx.message.author.id};').fetchall()) > 0:
+		if myrefeldebug.GetPlayerData(self, ctx.message.author.id) != None:
 			if not args:
 				await ctx.send('You must specify a name.')
 				return
@@ -49,9 +49,10 @@ class Account(commands.Cog):
 		if len(ctx.message.mentions):
 			target = ctx.message.mentions[0]
 		
-		if len(self.bot.database.execute(f'SELECT Id FROM chars WHERE Id = {target.id};').fetchall()) > 0:
+		targetData = myrefeldebug.GetPlayerData(self, target.id)
+		if targetData != None:
 			await ctx.send(embed=discord.Embed(colour=discord.Colour(int('8000FF', 16)),
-				title=self.bot.database.execute(f'SELECT Name FROM CHARS WHERE Id = {ctx.message.author.id}').fetchall()[0][0],
+				title=targetData[1],
 				description=f'A citizen of Myrefel'))
 		else:
 			await ctx.send(f'{target.mention} is not registered!')
