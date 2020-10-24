@@ -16,7 +16,7 @@ welcomeMessages = [
 ]
 status = cycle([
 	'Realms of Myrefel',
-	'!help to get started'
+	'!register to get started'
 ])
 
 # Displays a message when the bot loads, and loads cogs
