@@ -1,5 +1,6 @@
 from discord.ext import commands
 import myrefeldebug
+import myrefeldb
 import discord
 
 # Cogs-related commands
@@ -13,7 +14,7 @@ class Account(commands.Cog):
 		aliases=['start']
 	)
 	async def register(self, ctx):
-		if myrefeldebug.GetPlayerData(self, ctx.message.author.id) == None:
+		if myrefeldb.GetPlayerData(self, ctx.message.author.id) == None:
 			self.bot.database.execute(f'INSERT INTO chars (Id, Name) VALUES ({ctx.message.author.id}, \'{ctx.message.author.name}\');')
 			self.bot.database.commit()
 			myrefeldebug.DebugLog(f'{ctx.message.author} registered')
@@ -27,7 +28,7 @@ class Account(commands.Cog):
 		usage='<name>'
 	)
 	async def rename(self, ctx, *args):
-		if myrefeldebug.GetPlayerData(self, ctx.message.author.id) != None:
+		if myrefeldb.GetPlayerData(self, ctx.message.author.id) != None:
 			if not args:
 				await ctx.send('You must specify a name.')
 				return
@@ -49,7 +50,7 @@ class Account(commands.Cog):
 		if len(ctx.message.mentions):
 			target = ctx.message.mentions[0]
 		
-		targetData = myrefeldebug.GetPlayerData(self, target.id)
+		targetData = myrefeldb.GetPlayerData(self, target.id)
 		if targetData != None:
 			await ctx.send(embed=discord.Embed(colour=discord.Colour(int('8000FF', 16)),
 				title=targetData[1],

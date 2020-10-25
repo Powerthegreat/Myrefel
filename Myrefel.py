@@ -1,6 +1,7 @@
 from discord.ext import commands, tasks
 from itertools import cycle
 import myrefeldebug
+import myrefeldb
 import discord
 import sqlite3
 import random
@@ -27,8 +28,7 @@ async def on_ready():
 		bot.load_extension(cog)
 	status_cycle.start()
 	bot.database = sqlite3.connect('data/myrefel.sqlite')
-	bot.database.execute('CREATE TABLE IF NOT EXISTS chars (Id INT UNSIGNED NOT NULL, Name VARCHAR(255) NOT NULL DEFAULT \'\', PRIMARY KEY (Id));')
-	bot.database.commit()
+	myrefeldb.InitDB(bot.database)
 
 # Cycles through statuses	
 @tasks.loop(seconds=60)
