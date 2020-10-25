@@ -24,11 +24,11 @@ class Cogs(commands.Cog):
 			try:
 				self.bot.unload_extension('cogs.' + argstr)
 			except commands.ExtensionError as e:
-				myrefeldebug.DebugLog('Cog {} not loaded'.format(argstr))
+				myrefeldebug.DebugLog(f'Cog {argstr} not loaded')
 
 			self.bot.load_extension('cogs.' + argstr)
-			myrefeldebug.DebugLog('Cog cogs.{} reloaded'.format(argstr))
-			await ctx.send('Cog {} reloaded'.format(argstr))
+			myrefeldebug.DebugLog(f'Cog cogs.{argstr} reloaded')
+			await ctx.send(f'Cog {argstr} reloaded')
 		else:
 			myrefeldebug.DebugLog('No cog specified')
 			await ctx.send('No cog specified')
@@ -36,7 +36,7 @@ class Cogs(commands.Cog):
 	@reload_cog.error
 	async def reload_cog_error(self, ctx, error):
 		if isinstance(error, commands.NotOwner):
-			myrefeldebug.DebugLog('{} tried to reload a cog'.format(ctx.message.author))
+			myrefeldebug.DebugLog(f'{ctx.message.author} tried to reload a cog')
 
 def setup(bot):
 	bot.add_cog(Cogs(bot))
