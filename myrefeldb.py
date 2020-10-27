@@ -9,7 +9,8 @@ def InitDB(database):
 	database.execute('CREATE TABLE IF NOT EXISTS `world` (Id INT NOT NULL, \
 		Version INT NOT NULL DEFAULT 1000, \
 			PRIMARY KEY (Id));')
-	database.execute('INSERT INTO world (Id, Version) VALUES (0, 1000);')		
+	if len(database.execute('SELECT * FROM world WHERE Id = 0').fetchall()) <= 0:
+		database.execute('INSERT INTO world (Id, Version) VALUES (0, 1000);')		
 	database.commit()
 
 def GetPlayerData(self, playerId):
