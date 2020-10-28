@@ -1,4 +1,5 @@
 from discord.ext import commands
+import importlib
 import myrefeldebug
 import myrefeldb
 import discord
@@ -47,6 +48,7 @@ class Dev(commands.Cog):
 	)
 	@commands.is_owner()
 	async def reload_db(self, ctx):
+		importlib.reload(myrefeldb)
 		myrefeldb.InitDB(self.bot.database)
 		myrefeldebug.DebugLog('Loaded database changes')
 		await ctx.send('Loaded database changes')
