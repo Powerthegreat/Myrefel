@@ -9,7 +9,8 @@ import help
 
 bot = commands.Bot(command_prefix = commands.when_mentioned_or('!'), help_command=help.Help())
 cogs = ['cogs.cog_management',
-	'cogs.account'
+	'cogs.account',
+	'cogs.world_interaction'
 ]
 
 welcomeMessages = [
