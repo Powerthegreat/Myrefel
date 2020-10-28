@@ -35,12 +35,12 @@ class WorldInteraction(commands.Cog):
 				if len(connections) > 0:
 					message = 'Available locations:\n'
 					for i in range(0, len(connections)):
-						message += str(i) + ': ' + self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {connections[i][1]};').fetchall()[0][0] + '\n'
+						message += str(i + 1) + ': ' + self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {connections[i][1]};').fetchall()[0][0] + '\n'
 				else:
 					message = 'No available locations'
 			else:
-				if int(args[0]) < len(connections):
-					destination = connections[int(args[0])][1]
+				if int(args[0]) - 1 >= 0 and int(args[0]) - 1 < len(connections):
+					destination = connections[int(args[0]) - 1][1]
 					destinationName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {destination};').fetchall()[0][0]
 					message = 'Moved to ' + destinationName
 					self.bot.database.execute(f'UPDATE chars SET Room = \'{destination}\' WHERE Id = {ctx.message.author.id};')
