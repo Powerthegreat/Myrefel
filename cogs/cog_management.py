@@ -38,23 +38,6 @@ class Cogs(commands.Cog):
 	async def reload_cog_error(self, ctx, error):
 		if isinstance(error, commands.NotOwner):
 			myrefeldebug.DebugLog(f'{ctx.message.author} tried to reload a cog')
-	
-	@commands.command(
-		name='reload_db',
-		description='Loads changes to the database.',
-		aliases=['reload_database', 'rdb'],
-		hidden=True
-	)
-	@commands.is_owner()
-	async def reload_db(self, ctx):
-		myrefeldb.InitDB()
-		myrefeldebug.DebugLog('Loaded database changes')
-		await ctx.send('Loaded database changes')
-	
-	@reload_db.error
-	async def reload_db_error(self, ctx, error):
-		if isinstance(error, commands.NotOwner):
-			myrefeldebug.DebugLog(f'{ctx.message.author} tried to load database changes')
 
 def setup(bot):
 	bot.add_cog(Cogs(bot))

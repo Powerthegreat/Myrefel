@@ -38,6 +38,23 @@ class Dev(commands.Cog):
 	async def teleport_error(self, ctx, error):
 		if isinstance(error, commands.NotOwner):
 			myrefeldebug.DebugLog(f'{ctx.message.author} tried to teleport')
+	
+	@commands.command(
+		name='reload_db',
+		description='Loads changes to the database.',
+		aliases=['reload_database', 'rdb'],
+		hidden=True
+	)
+	@commands.is_owner()
+	async def reload_db(self, ctx):
+		myrefeldb.InitDB(self.bot.database)
+		myrefeldebug.DebugLog('Loaded database changes')
+		await ctx.send('Loaded database changes')
+	
+	@reload_db.error
+	async def reload_db_error(self, ctx, error):
+		if isinstance(error, commands.NotOwner):
+			myrefeldebug.DebugLog(f'{ctx.message.author} tried to load database changes')
 
 def setup(bot):
 	bot.add_cog(Dev(bot))
