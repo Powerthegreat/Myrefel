@@ -83,6 +83,16 @@ def InitDB(database):
 			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
 				VALUES (6, 5, 4);')
 			database.execute('UPDATE world SET Version = 1005 WHERE  Id = 0;')
+		# Update from 1005 to 1006 - adding the flame
+		if database.execute('SELECT Version FROM world WHERE Id = 0').fetchall()[0][0] == 1005:
+			myrefeldebug.DebugLog('Updated database to 1006')
+			database.execute('INSERT INTO rooms (Id, Description, Name) \
+				VALUES (6, \'Purple flame surrounding you, enveloping your entire being.\', \'Flame\');')
+			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+				VALUES (7, 5, 6);')
+			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+				VALUES (8, 6, 0);')
+			database.execute('UPDATE world SET Version = 1006 WHERE  Id = 0;')
 	database.commit()
 
 def AddRooms(database):
@@ -98,6 +108,8 @@ def AddRooms(database):
 		VALUES (4, \'A corridor lit by purple flames.\', \'Corridor\');')
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (5, \'An altar of flame.\nPurple lights dance through the air.\', \'Altar\');')
+	database.execute('INSERT INTO rooms (Id, Description, Name) \
+		VALUES (6, \'Purple flame surrounding you, enveloping your entire being.\', \'Flame\');')
 
 
 def AddRoomConnections(database):
@@ -118,6 +130,11 @@ def AddRoomConnections(database):
 		VALUES (5, 4, 5);')
 	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
 		VALUES (6, 5, 4);')
+	# Flame altar through the flame back to the tavern
+	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+		VALUES (7, 5, 6);')
+	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+		VALUES (8, 6, 0);')
 
 def GetPlayerData(self, playerId):
 	playerData = self.bot.database.execute(f'SELECT * FROM chars WHERE Id = {playerId};').fetchall()
