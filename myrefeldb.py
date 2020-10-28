@@ -67,6 +67,22 @@ def InitDB(database):
 			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
 				VALUES (2, 2, 3);')
 			database.execute('UPDATE world SET Version = 1004 WHERE  Id = 0;')
+		# Update from 1004 to 1005 - adding the flame altar
+		if database.execute('SELECT Version FROM world WHERE Id = 0').fetchall()[0][0] == 1004:
+			myrefeldebug.DebugLog('Updated database to 1005')
+			database.execute('INSERT INTO rooms (Id, Description, Name) \
+				VALUES (4, \'A corridor lit by purple flames.\', \'Corridor\');')
+			database.execute('INSERT INTO rooms (Id, Description, Name) \
+				VALUES (5, \'An altar of flame.\nPurple lights dance through the air.\', \'Altar\');')
+			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+				VALUES (3, 3, 4);')
+			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+				VALUES (4, 4, 3);')
+			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+				VALUES (5, 4, 5);')
+			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+				VALUES (6, 5, 4);')
+			database.execute('UPDATE world SET Version = 1005 WHERE  Id = 0;')
 	database.commit()
 
 def AddRooms(database):
@@ -78,6 +94,11 @@ def AddRooms(database):
 		VALUES (2, \'The storeroom behind the bar of the tavern.\', \'Tavern Storeroom\');')
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (3, \'A dark, dank pit.\', \'The Pit\');')
+	database.execute('INSERT INTO rooms (Id, Description, Name) \
+		VALUES (4, \'A corridor lit by purple flames.\', \'Corridor\');')
+	database.execute('INSERT INTO rooms (Id, Description, Name) \
+		VALUES (5, \'An altar of flame.\nPurple lights dance through the air.\', \'Altar\');')
+
 
 def AddRoomConnections(database):
 	# Connection the tavern with its storeroom
@@ -88,6 +109,15 @@ def AddRoomConnections(database):
 	# Connecting the tavern to the pit
 	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
 		VALUES (2, 2, 3);')
+	# Pit to flame altar
+	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+		VALUES (3, 3, 4);')
+	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+		VALUES (4, 4, 3);')
+	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+		VALUES (5, 4, 5);')
+	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
+		VALUES (6, 5, 4);')
 
 def GetPlayerData(self, playerId):
 	playerData = self.bot.database.execute(f'SELECT * FROM chars WHERE Id = {playerId};').fetchall()
