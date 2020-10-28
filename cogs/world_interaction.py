@@ -12,7 +12,7 @@ class WorldInteraction(commands.Cog):
 		name='inspect',
 		description='Shows a description of your current location'
 	)
-	async def register(self, ctx):
+	async def inspect(self, ctx):
 		playerData = myrefeldb.GetPlayerData(self, ctx.message.author.id)
 		if playerData != None:
 			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
