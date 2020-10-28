@@ -15,7 +15,9 @@ class WorldInteraction(commands.Cog):
 	async def register(self, ctx):
 		playerData = myrefeldb.GetPlayerData(self, ctx.message.author.id)
 		if playerData != None:
-			await ctx.send(self.bot.database.execute(f'SELECT description FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0])
+			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
+			roomDescription = self.bot.database.execute(f'SELECT description FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
+			await ctx.send(f'{roomName}\n{roomDescription}')
 		else:
 			await ctx.send('You are not registered!')
 

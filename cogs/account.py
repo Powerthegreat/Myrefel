@@ -50,11 +50,12 @@ class Account(commands.Cog):
 		if len(ctx.message.mentions):
 			target = ctx.message.mentions[0]
 		
-		targetData = myrefeldb.GetPlayerData(self, target.id)
-		if targetData != None:
+		playerData = myrefeldb.GetPlayerData(self, target.id)
+		if playerData != None:
+			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
 			await ctx.send(embed=discord.Embed(colour=discord.Colour(int('8000FF', 16)),
-				title=targetData[1],
-				description=f'A citizen of Myrefel'))
+				title=playerData[1],
+				description=f'A citizen of Myrefel\nCurrent Location: {roomName}'))
 		else:
 			await ctx.send(f'{target.mention} is not registered!')
 
