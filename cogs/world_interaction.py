@@ -20,6 +20,17 @@ class WorldInteraction(commands.Cog):
 			await ctx.send(f'{roomName}\n{roomDescription}')
 		else:
 			await ctx.send('You are not registered!')
-
+	
+	@commands.command(
+		name='move',
+		description='Moves you to a different location\nIf no location is specified, shows a list of accessible locations',
+		usage='[destination]'
+	)
+	async def move(self, ctx):
+		if myrefeldb.GetPlayerData(self, ctx.message.author.id) != None:
+			await ctx.send('WIP')
+		else:
+			await ctx.send('You are not registered!')
+	
 def setup(bot):
 	bot.add_cog(WorldInteraction(bot))
