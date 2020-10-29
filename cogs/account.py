@@ -54,7 +54,7 @@ class Account(commands.Cog):
 			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
 			await ctx.send(embed=discord.Embed(colour=discord.Colour(int('8000FF', 16)),
 				title=playerData[1],
-				description=f'A citizen of Myrefel\nCurrent Location: {roomName}'))
+				description=f'A citizen of Myrefel\nCurrent Location: {roomName}\nHug Count: {playerData[3]}'))
 		else:
 			await ctx.send(f'{target.mention} is not registered!')
 
