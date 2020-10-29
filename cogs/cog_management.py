@@ -37,7 +37,7 @@ class Cogs(commands.Cog):
 	@reload_cog.error
 	async def reload_cog_error(self, ctx, error):
 		if isinstance(error, commands.NotOwner):
-			myrefeldebug.DebugLog(f'{ctx.message.author} tried to reload a cog')
+			myrefeldebug.DebugLog(f'{ctx.author} tried to reload a cog')
 
 def setup(bot):
 	bot.add_cog(Cogs(bot))

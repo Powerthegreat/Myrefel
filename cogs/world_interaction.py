@@ -26,7 +26,7 @@ class WorldInteraction(commands.Cog):
 		usage='[destination id]'
 	)
 	async def move(self, ctx, *args):
-		playerData = myrefeldb.GetPlayerData(self, ctx.message.author.id)
+		playerData = myrefeldb.GetPlayerData(self, ctx.author.id)
 		if playerData != None:
 			connections = self.bot.database.execute(f'SELECT FirstRoom, SecondRoom from roomconns WHERE FirstRoom = {playerData[2]};').fetchall()
 			message = ''
@@ -44,7 +44,7 @@ class WorldInteraction(commands.Cog):
 					message = 'Moved to ' + destinationName
 					self.bot.database.execute(f'UPDATE chars SET Room = \'{destination}\' WHERE Id = {ctx.message.author.id};')
 					self.bot.database.commit()
-					myrefeldebug.DebugLog(f'{ctx.message.author} moved to {destinationName}')
+					myrefeldebug.DebugLog(f'{ctx.author} moved to {destinationName}')
 				else:
 					message = 'Invalid destination!'
 			await ctx.send(message)

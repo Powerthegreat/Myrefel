@@ -13,10 +13,10 @@ class Account(commands.Cog):
 		aliases=['start']
 	)
 	async def register(self, ctx):
-		if myrefeldb.GetPlayerData(self, ctx.message.author.id) == None:
-			self.bot.database.execute(f'INSERT INTO chars (Id, Name) VALUES ({ctx.message.author.id}, \'{ctx.message.author.name}\');')
+		if myrefeldb.GetPlayerData(self, ctx.author.id) == None:
+			self.bot.database.execute(f'INSERT INTO chars (Id, Name) VALUES ({ctx.author.id}, \'{ctx.message.author.name}\');')
 			self.bot.database.commit()
-			myrefeldebug.DebugLog(f'{ctx.message.author} registered')
+			myrefeldebug.DebugLog(f'{ctx.author} registered')
 			await ctx.send('Welcome to Myrefel!')
 		else:
 			await ctx.send('You have already registered!')
@@ -27,15 +27,15 @@ class Account(commands.Cog):
 		usage='<name>'
 	)
 	async def rename(self, ctx, *args):
-		if myrefeldb.GetPlayerData(self, ctx.message.author.id) != None:
+		if myrefeldb.GetPlayerData(self, ctx.author.id) != None:
 			if not args:
 				await ctx.send('You must specify a name.')
 				return
 			
-			self.bot.database.execute(f'UPDATE chars SET Name = \'{args[0]}\' WHERE Id = {ctx.message.author.id};')
+			self.bot.database.execute(f'UPDATE chars SET Name = \'{args[0]}\' WHERE Id = {ctx.author.id};')
 			self.bot.database.commit()
 			await ctx.send(f'Updated your name to {args[0]}')
-			myrefeldebug.DebugLog(f'{ctx.message.author} updated their name to {args[0]}')
+			myrefeldebug.DebugLog(f'{ctx.author} updated their name to {args[0]}')
 		else:
 			await ctx.send('You are not registered!')
 	
@@ -45,7 +45,7 @@ class Account(commands.Cog):
 		usage='[@Mention]'
 	)
 	async def account(self, ctx):
-		target = ctx.message.author
+		target = ctx.author
 		if len(ctx.message.mentions):
 			target = ctx.message.mentions[0]
 		

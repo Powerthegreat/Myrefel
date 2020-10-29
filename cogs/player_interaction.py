@@ -21,11 +21,11 @@ class PlayerInteraction(commands.Cog):
 			else:
 				secondPlayerName = ctx.message.mentions[0].name
 
-			playerData = myrefeldb.GetPlayerData(self, ctx.message.author.id)
+			playerData = myrefeldb.GetPlayerData(self, ctx.author.id)
 			if playerData != None:
 				firstPlayerName = playerData[1]
 			else:
-				firstPlayerName = ctx.message.author.name
+				firstPlayerName = ctx.author.name
 			
 			await ctx.send(f'{firstPlayerName} hugged {secondPlayerName}')
 		else:
