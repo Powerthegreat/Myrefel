@@ -12,6 +12,7 @@ def InitDB(database):
 		database.execute('CREATE TABLE chars (Id INT NOT NULL, \
 			Name VARCHAR(255) NOT NULL DEFAULT \'\', \
 			Room INT NOT NULL DEFAULT 0, \
+			Hugs INT NOT NULL DEFAULT 0, \
 				PRIMARY KEY (Id), \
 				CONSTRAINT Room FOREIGN KEY (Room) REFERENCES rooms (Id));')
 		database.execute('CREATE TABLE world (Id INT NOT NULL, \
@@ -93,6 +94,12 @@ def InitDB(database):
 			database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
 				VALUES (8, 6, 0);')
 			database.execute('UPDATE world SET Version = 1006 WHERE  Id = 0;')
+		# Update from 1006 to 1007 - hug counter
+		if database.execute('SELECT Version FROM world WHERE Id = 0').fetchall()[0][0] == 1006:
+			myrefeldebug.DebugLog('Updated database to 1007')
+			database.execute('ALTER TABLE chars \
+				ADD COLUMN Hugs INT NOT NULL DEFAULT 0;')
+			database.execute('UPDATE world SET Version = 1007 WHERE  Id = 0;')
 	database.commit()
 
 def AddRooms(database):
