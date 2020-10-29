@@ -103,12 +103,15 @@ def InitDB(database):
 	database.commit()
 
 def AddRooms(database):
+	# The tavern
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (0, \'A tavern with no distinguishing features.\', \'The Tavern\');')
+	# Erelyn's room
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (1, \'A room outside of reality.\', "Erelyn\'s Room");')
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (2, \'The storeroom behind the bar of the tavern.\', \'Tavern Storeroom\');')
+	# The pit and rooms beyond
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (3, \'A dark, dank pit.\', \'The Pit\');')
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
@@ -120,7 +123,7 @@ def AddRooms(database):
 
 
 def AddRoomConnections(database):
-	# Connection the tavern with its storeroom
+	# Connecting the tavern with its storeroom
 	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
 		VALUES (0, 0, 2);')
 	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
@@ -144,6 +147,7 @@ def AddRoomConnections(database):
 		VALUES (8, 6, 0);')
 
 def GetPlayerData(self, playerId):
+	# Gets a player's data from the database
 	playerData = self.bot.database.execute(f'SELECT * FROM chars WHERE Id = {playerId};').fetchall()
 	if len(playerData) > 0:
 		return playerData[0]

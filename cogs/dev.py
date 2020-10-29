@@ -17,6 +17,7 @@ class Dev(commands.Cog):
 	)
 	@commands.is_owner()
 	async def teleport(self, ctx, *args):
+		# Teleports a dev to a room by id
 		if myrefeldb.GetPlayerData(self, ctx.author.id) != None:
 			if not args:
 				await ctx.send('You must specify a room id.')
@@ -26,6 +27,7 @@ class Dev(commands.Cog):
 			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {roomId};').fetchall()
 			if len(roomName) > 0:
 				roomName = roomName[0][0]
+				# The teleport itself
 				self.bot.database.execute(f'UPDATE chars SET Room = \'{roomId}\' WHERE Id = {ctx.author.id};')
 				self.bot.database.commit()
 				await ctx.send(f'Teleported you to {roomName}')
@@ -48,6 +50,7 @@ class Dev(commands.Cog):
 	)
 	@commands.is_owner()
 	async def reload_db(self, ctx):
+		# Loads any changes to the database that have been made since the bot started
 		importlib.reload(myrefeldb)
 		myrefeldb.InitDB(self.bot.database)
 		myrefeldebug.DebugLog('Loaded database changes')
@@ -66,6 +69,7 @@ class Dev(commands.Cog):
 	)
 	@commands.is_owner()
 	async def moveother(self, ctx, *args):
+		# Teleports another player
 		if myrefeldb.GetPlayerData(self, ctx.author.id) != None:
 			if not args:
 				await ctx.send('You must specify a room id.')
@@ -76,6 +80,7 @@ class Dev(commands.Cog):
 			target = ctx.message.mentions[0]
 			if len(roomName) > 0:
 				roomName = roomName[0][0]
+				# The teleport itself
 				self.bot.database.execute(f'UPDATE chars SET Room = \'{roomId}\' WHERE Id = {target.id};')
 				self.bot.database.commit()
 				await ctx.send(f'Teleported {target.mention} to {roomName}')

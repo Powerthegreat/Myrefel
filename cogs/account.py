@@ -13,11 +13,12 @@ class Account(commands.Cog):
 		aliases=['start']
 	)
 	async def register(self, ctx):
+		# Initialises a user's information
 		if myrefeldb.GetPlayerData(self, ctx.author.id) == None:
 			self.bot.database.execute(f'INSERT INTO chars (Id, Name) VALUES ({ctx.author.id}, \'{ctx.message.author.name}\');')
 			self.bot.database.commit()
-			myrefeldebug.DebugLog(f'{ctx.author} registered')
 			await ctx.send('Welcome to Myrefel!')
+			myrefeldebug.DebugLog(f'{ctx.author} registered')
 		else:
 			await ctx.send('You have already registered!')
 	
@@ -27,6 +28,7 @@ class Account(commands.Cog):
 		usage='<name>'
 	)
 	async def rename(self, ctx, *args):
+		# Changes a player's name
 		if myrefeldb.GetPlayerData(self, ctx.author.id) != None:
 			if not args:
 				await ctx.send('You must specify a name.')
@@ -45,6 +47,7 @@ class Account(commands.Cog):
 		usage='[@Mention]'
 	)
 	async def account(self, ctx):
+		# Shows a player's information
 		target = ctx.author
 		if len(ctx.message.mentions):
 			target = ctx.message.mentions[0]
@@ -52,6 +55,7 @@ class Account(commands.Cog):
 		playerData = myrefeldb.GetPlayerData(self, target.id)
 		if playerData != None:
 			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
+			# Fancy embed
 			await ctx.send(embed=discord.Embed(colour=discord.Colour(int('8000FF', 16)),
 				title=playerData[1],
 				description=f'A citizen of Myrefel\nCurrent Location: {roomName}\nHug Count: {playerData[3]}'))

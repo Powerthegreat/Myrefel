@@ -12,6 +12,7 @@ class WorldInteraction(commands.Cog):
 		description='Shows a description of your current location'
 	)
 	async def inspect(self, ctx):
+		# Gets the player's current location, then pulls the information for that room from the database
 		playerData = myrefeldb.GetPlayerData(self, ctx.message.author.id)
 		if playerData != None:
 			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
@@ -31,6 +32,7 @@ class WorldInteraction(commands.Cog):
 			connections = self.bot.database.execute(f'SELECT FirstRoom, SecondRoom from roomconns WHERE FirstRoom = {playerData[2]};').fetchall()
 			message = ''
 			if not args:
+				# Show the places the player can go
 				if len(connections) > 0:
 					message = 'Available locations:\n'
 					for i in range(0, len(connections)):
@@ -38,6 +40,7 @@ class WorldInteraction(commands.Cog):
 				else:
 					message = 'No available locations'
 			else:
+				# Go to a connected location
 				if int(args[0]) - 1 >= 0 and int(args[0]) - 1 < len(connections):
 					destination = connections[int(args[0]) - 1][1]
 					destinationName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {destination};').fetchall()[0][0]

@@ -18,6 +18,7 @@ cogs = ['cogs.cog_management',
 welcomeMessages = [
 	'Myrefel awaits'
 ]
+
 status = cycle([
 	'Realms of Myrefel',
 	'!register to get started'

@@ -9,8 +9,6 @@ class Cogs(commands.Cog):
 		self.bot = bot
 
 	# Reloads a cog
-	# Written by Power 07/03/2020
-	# Hidden by Power 08/03/2020
 	@commands.command(
 		name='reload_cog',
 		description='Reloads a cog.',
@@ -28,11 +26,11 @@ class Cogs(commands.Cog):
 				myrefeldebug.DebugLog(f'Cog {argstr} not loaded')
 
 			self.bot.load_extension('cogs.' + argstr)
-			myrefeldebug.DebugLog(f'Cog cogs.{argstr} reloaded')
 			await ctx.send(f'Cog {argstr} reloaded')
+			myrefeldebug.DebugLog(f'Cog cogs.{argstr} reloaded')
 		else:
-			myrefeldebug.DebugLog('No cog specified')
 			await ctx.send('No cog specified')
+			myrefeldebug.DebugLog('No cog specified')
 
 	@reload_cog.error
 	async def reload_cog_error(self, ctx, error):
