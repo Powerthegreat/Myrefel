@@ -11,6 +11,7 @@ bot = commands.Bot(command_prefix = commands.when_mentioned_or('!'), help_comman
 cogs = ['cogs.cog_management',
 	'cogs.account',
 	'cogs.world_interaction',
+	'cogs.player_interaction',
 	'cogs.dev'
 ]
 
