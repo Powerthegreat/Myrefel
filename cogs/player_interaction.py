@@ -30,7 +30,7 @@ class PlayerInteraction(commands.Cog):
 			if (firstPlayerName == secondPlayerName):
 				await ctx.send(f'{firstPlayerName} hugged themself')
 			else:
-				self.bot.database.execute(f'UPDATE chars SET Hugs = {firstPlayerData[3] + 1} WHERE Id = {firstPlayerData[1]};')
+				self.bot.database.execute(f'UPDATE chars SET Hugs = {firstPlayerData[3] + 1} WHERE Id = {firstPlayerData[0]};')
 				self.bot.database.execute(f'UPDATE chars SET Hugs = {secondPlayerData[3] + 1} WHERE Id = {secondPlayerData[0]};')
 				await ctx.send(f'{firstPlayerName} hugged {secondPlayerName}')
 		else:
