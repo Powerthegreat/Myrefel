@@ -27,7 +27,10 @@ class PlayerInteraction(commands.Cog):
 			else:
 				firstPlayerName = ctx.author.name
 			
-			await ctx.send(f'{firstPlayerName} hugged {secondPlayerName}')
+			if (firstPlayerName == secondPlayerName):
+				await ctx.send(f'{firstPlayerName} hugged themself')
+			else:
+				await ctx.send(f'{firstPlayerName} hugged {secondPlayerName}')
 		else:
 			await ctx.send('You need to mention someone to hug them!')
 	
