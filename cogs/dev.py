@@ -81,7 +81,7 @@ class Dev(commands.Cog):
 			if len(roomName) > 0:
 				roomName = roomName[0][0]
 				# The teleport itself
-				self.bot.database.execute(f'UPDATE chars SET Room = \'{roomId}\' WHERE Id = {target.id};')
+				self.bot.database.execute(f'UPDATE chars SET room = \'{roomId}\' WHERE Id = {target.id};')
 				self.bot.database.commit()
 				await ctx.send(f'Teleported {target.mention} to {roomName}')
 				myrefeldebug.DebugLog(f'{ctx.author} teleported {target} to room {roomName}')
