@@ -17,13 +17,13 @@ class WorldInteraction(commands.Cog):
 		if playerData != None:
 			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
 			roomDescription = self.bot.database.execute(f'SELECT description FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
-			playersInRoom = self.bot.database.execute(f'SELECT name FROM chars WHERE room = {playerData[2]}').fetchall()
+			playersInRoom = self.bot.database.execute(f'SELECT Id, Name FROM chars WHERE room = {playerData[2]}').fetchall()
 			message = f'{roomName}\n{roomDescription}'
 			if len(playersInRoom) > 1:
 				message += '\nCharacters currently in this location: '
 				for player in playersInRoom:
-					if playerData[1] != player[0]:
-						message += player[0] + ', '
+					if playerData[0] != player[0]:
+						message += player[1] + ', '
 			await ctx.send(message)
 		else:
 			await ctx.send('You are not registered!')
