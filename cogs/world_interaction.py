@@ -15,8 +15,8 @@ class WorldInteraction(commands.Cog):
 		# Gets the player's current location, then pulls the information for that room from the database
 		playerData = myrefeldb.GetPlayerData(self, ctx.message.author.id)
 		if playerData != None:
-			roomName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
-			roomDescription = self.bot.database.execute(f'SELECT description FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
+			roomName = self.bot.database.execute(f'SELECT Name FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
+			roomDescription = self.bot.database.execute(f'SELECT Description FROM rooms WHERE Id = {playerData[2]};').fetchall()[0][0]
 			playersInRoom = self.bot.database.execute(f'SELECT Id, Name FROM chars WHERE room = {playerData[2]}').fetchall()
 			message = f'{roomName}\n{roomDescription}'
 			if len(playersInRoom) > 1:
@@ -43,14 +43,14 @@ class WorldInteraction(commands.Cog):
 				if len(connections) > 0:
 					message = 'Available locations:\n'
 					for i in range(0, len(connections)):
-						message += str(i + 1) + ': ' + self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {connections[i][1]};').fetchall()[0][0] + '\n'
+						message += str(i + 1) + ': ' + self.bot.database.execute(f'SELECT Name FROM rooms WHERE Id = {connections[i][1]};').fetchall()[0][0] + '\n'
 				else:
 					message = 'No available locations'
 			else:
 				# Go to a connected location
 				if int(args[0]) - 1 >= 0 and int(args[0]) - 1 < len(connections):
 					destination = connections[int(args[0]) - 1][1]
-					destinationName = self.bot.database.execute(f'SELECT name FROM rooms WHERE Id = {destination};').fetchall()[0][0]
+					destinationName = self.bot.database.execute(f'SELECT Name FROM rooms WHERE Id = {destination};').fetchall()[0][0]
 					message = 'Moved to ' + destinationName
 					self.bot.database.execute(f'UPDATE chars SET Room = \'{destination}\' WHERE Id = {ctx.message.author.id};')
 					self.bot.database.commit()
