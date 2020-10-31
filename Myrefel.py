@@ -54,6 +54,7 @@ async def reload_all(ctx):
 
 @reload_all.error
 async def reload_all_error(ctx, error):
+	myrefeldebug.DebugLog(str(error))
 	if isinstance(error, commands.NotOwner):
 		myrefeldebug.DebugLog(f'{ctx.message.author} tried to reload all cogs')
 

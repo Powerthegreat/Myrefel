@@ -39,6 +39,7 @@ class Dev(commands.Cog):
 	
 	@teleport.error
 	async def teleport_error(self, ctx, error):
+		myrefeldebug.DebugLog(str(error))
 		if isinstance(error, commands.NotOwner):
 			myrefeldebug.DebugLog(f'{ctx.author} tried to teleport')
 	
@@ -58,6 +59,7 @@ class Dev(commands.Cog):
 	
 	@reload_db.error
 	async def reload_db_error(self, ctx, error):
+		myrefeldebug.DebugLog(str(error))
 		if isinstance(error, commands.NotOwner):
 			myrefeldebug.DebugLog(f'{ctx.author} tried to load database changes')
 	

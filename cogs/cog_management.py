@@ -34,6 +34,7 @@ class Cogs(commands.Cog):
 
 	@reload_cog.error
 	async def reload_cog_error(self, ctx, error):
+		myrefeldebug.DebugLog(str(error))
 		if isinstance(error, commands.NotOwner):
 			myrefeldebug.DebugLog(f'{ctx.author} tried to reload a cog')
 
