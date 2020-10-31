@@ -30,7 +30,7 @@ class PlayerInteraction(commands.Cog):
 				firstPlayerName = ctx.author.name
 			
 			# Check if it's the same person
-			if firstPlayerName == secondPlayerName:
+			if firstPlayerData[0] == secondPlayerData[0]:
 				await ctx.send(f'{firstPlayerName} hugged themself')
 			else:
 				# Check if the huggees are in the same room
