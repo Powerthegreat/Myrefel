@@ -36,7 +36,7 @@ class WorldInteraction(commands.Cog):
 	async def move(self, ctx, *args):
 		playerData = myrefeldb.GetPlayerData(self, ctx.author.id)
 		if playerData != None:
-			connections = self.bot.database.execute(f'SELECT FirstRoom, SecondRoom from roomconns WHERE FirstRoom = {playerData[2]};').fetchall()
+			connections = self.bot.database.execute(f'SELECT * from roomconns WHERE FirstRoom = {playerData[2]};').fetchall()
 			message = ''
 			if not args:
 				# Show the places the player can go

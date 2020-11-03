@@ -18,10 +18,8 @@ def InitDB(database):
 		database.execute('CREATE TABLE world (Id INT NOT NULL, \
 			Version INT NOT NULL DEFAULT 0, \
 				PRIMARY KEY (Id));')
-		database.execute('CREATE TABLE roomconns (Id INT NOT NULL, \
-			FirstRoom INT NOT NULL DEFAULT 0, \
+		database.execute('CREATE TABLE roomconns (FirstRoom INT NOT NULL DEFAULT 0, \
 			SecondRoom INT NOT NULL DEFAULT 0, \
-				PRIMARY KEY (Id), \
 				CONSTRAINT FirstRoom FOREIGN KEY (FirstRoom) REFERENCES rooms(Id), \
 				CONSTRAINT SecondRoom FOREIGN KEY (SecondRoom) REFERENCES rooms(Id));')
 		database.execute('INSERT INTO world (Id, Version) VALUES (0, 1003);')
@@ -100,6 +98,19 @@ def InitDB(database):
 			database.execute('ALTER TABLE chars \
 				ADD COLUMN Hugs INT NOT NULL DEFAULT 0;')
 			database.execute('UPDATE world SET Version = 1007 WHERE  Id = 0;')
+		# Update from 1007 to 1008 - removing unnecessary column from room connection table
+		if database.execute('SELECT Version FROM world WHERE Id = 0').fetchall()[0][0] == 1007:
+			myrefeldebug.DebugLog('Updated database to 1008')
+			database.execute('ALTER TABLE roomconns \
+				RENAME TO roomconns_old;')
+			database.execute('CREATE TABLE roomconns (FirstRoom INT NOT NULL DEFAULT 0, \
+				SecondRoom INT NOT NULL DEFAULT 0, \
+					CONSTRAINT FirstRoom FOREIGN KEY (FirstRoom) REFERENCES rooms(Id), \
+					CONSTRAINT SecondRoom FOREIGN KEY (SecondRoom) REFERENCES rooms(Id));')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				SELECT FirstRoom, SecondRoom FROM roomconns_old;')
+			database.execute('DROP TABLE roomconns_old;')
+			database.execute('UPDATE world SET Version = 1008 WHERE  Id = 0;')
 	database.commit()
 
 def AddRooms(database):
@@ -124,27 +135,27 @@ def AddRooms(database):
 
 def AddRoomConnections(database):
 	# Connecting the tavern with its storeroom
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (0, 0, 2);')
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (1, 2, 0);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (0, 2);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (2, 0);')
 	# Connecting the tavern to the pit
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (2, 2, 3);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (2, 3);')
 	# Pit to flame altar
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (3, 3, 4);')
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (4, 4, 3);')
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (5, 4, 5);')
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (6, 5, 4);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (3, 4);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (4, 3);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (4, 5);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (5, 4);')
 	# Flame altar through the flame back to the tavern
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (7, 5, 6);')
-	database.execute('INSERT INTO roomconns (Id, FirstRoom, SecondRoom) \
-		VALUES (8, 6, 0);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (5, 6);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (6, 0);')
 
 def GetPlayerData(self, playerId):
 	# Gets a player's data from the database
