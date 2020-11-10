@@ -111,6 +111,28 @@ def InitDB(database):
 				SELECT FirstRoom, SecondRoom FROM roomconns_old;')
 			database.execute('DROP TABLE roomconns_old;')
 			database.execute('UPDATE world SET Version = 1008 WHERE  Id = 0;')
+		# Update from 1008 to 1009 - adding new rooms for the village
+		if database.execute('SELECT Version FROM world WHERE Id = 0').fetchall()[0][0] == 1008:
+			myrefeldebug.DebugLog('Updated database to 1009')
+			database.execute('INSERT INTO rooms (Id, Description, Name) \
+				VALUES (7, \'A small village.\', \'The Village\');')
+			database.execute('INSERT INTO rooms (Id, Description, Name) \
+				VALUES (8, \'The blacksmith of the town.\', \'Blacksmith\');')
+			database.execute('INSERT INTO rooms (Id, Description, Name) \
+				VALUES (9, \'A store selling all manner of goods.\', \'General Store\');')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				VALUES (0, 7);')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				VALUES (7, 0);')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				VALUES (7, 8);')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				VALUES (8, 7);')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				VALUES (7, 9);')
+			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+				VALUES (9, 7);')
+			database.execute('UPDATE world SET Version = 1009 WHERE  Id = 0;')
 	database.commit()
 
 def AddRooms(database):
@@ -131,6 +153,13 @@ def AddRooms(database):
 		VALUES (5, \'An altar of flame.\nPurple lights dance through the air.\', \'Altar\');')
 	database.execute('INSERT INTO rooms (Id, Description, Name) \
 		VALUES (6, \'Purple flame surrounding you, enveloping your entire being.\', \'Flame\');')
+	# The village
+	database.execute('INSERT INTO rooms (Id, Description, Name) \
+		VALUES (7, \'A small village.\', \'The Village\');')
+	database.execute('INSERT INTO rooms (Id, Description, Name) \
+		VALUES (8, \'The blacksmith of the town.\', \'Blacksmith\');')
+	database.execute('INSERT INTO rooms (Id, Description, Name) \
+		VALUES (9, \'A store selling all manner of goods.\', \'General Store\');')
 
 
 def AddRoomConnections(database):
@@ -156,6 +185,21 @@ def AddRoomConnections(database):
 		VALUES (5, 6);')
 	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
 		VALUES (6, 0);')
+	# The village
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (0, 7);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (7, 0);')
+	# Blacksmith
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (7, 8);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (8, 7);')
+	# General store
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (7, 9);')
+	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
+		VALUES (9, 7);')
 
 def GetPlayerData(self, playerId):
 	# Gets a player's data from the database
