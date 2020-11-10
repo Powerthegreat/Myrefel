@@ -34,10 +34,9 @@ class PlayerInteraction(commands.Cog):
 				await ctx.send(f'{firstPlayerName} hugged themself')
 			else:
 				# Check if the huggees are in the same room
-				if firstPlayerData != None and secondPlayerData != None:
-					if firstPlayerData[2] != secondPlayerData[2]:
-						await ctx.send(f'You can only hug people in the same room!\n(and unregistered people)')
-						return
+				if firstPlayerData != None and secondPlayerData != None and firstPlayerData[2] != secondPlayerData[2]:
+					await ctx.send(f'You can only hug people in the same room!\n(and unregistered people)')
+					return
 				
 				# Increment their hug counters
 				if firstPlayerData != None:
