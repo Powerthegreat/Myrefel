@@ -22,7 +22,7 @@ def InitDB(database):
 			SecondRoom INT NOT NULL DEFAULT 0, \
 				CONSTRAINT FirstRoom FOREIGN KEY (FirstRoom) REFERENCES rooms(Id), \
 				CONSTRAINT SecondRoom FOREIGN KEY (SecondRoom) REFERENCES rooms(Id));')
-		database.execute('INSERT INTO world (Id, Version) VALUES (0, 1003);')
+		database.execute('INSERT INTO world (Id, Version) VALUES (0, 1009);')
 		AddRooms(database)
 		AddRoomConnections(database)
 	else:
