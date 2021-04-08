@@ -41,5 +41,40 @@ class ItemInteraction(commands.Cog):
 		else:
 			await ctx.send(f'You are not registered!')
 	
+	@commands.command(
+		name='drop',
+		description='Drops an item',
+		usage='<item position> [count]'
+	)
+	async def drop(self, ctx, *args):
+		# Drops items
+		target = ctx.author
+		
+		playerData = myrefeldb.GetPlayerData(self, target.id)
+		if playerData != None:
+			if not args:
+					await ctx.send('You must specify an item within your inventory!')
+					return
+
+			itemPosition = int(args[0]) - 1
+			countToDrop = 1
+			if len(args) > 1:
+				countToDrop = int(args[1])
+			inventory = self.bot.database.execute(f'SELECT ItemId, Count FROM inventory WHERE CharId = {target.id};').fetchall()
+			
+			if itemPosition >= len(inventory) or itemPosition < 0:
+				await ctx.send('You must specify an item within your inventory!')
+				return
+			itemData = self.bot.database.execute(f'SELECT Name FROM items WHERE Id = {inventory[itemPosition][0]};').fetchall()[0]
+			
+			if inventory[itemPosition][1] <= countToDrop:
+				self.bot.database.execute(f'DELETE FROM inventory WHERE CharId = {target.id} AND ItemId = {inventory[itemPosition][0]};')
+				countToDrop = inventory[itemPosition][1]
+			else:
+				self.bot.database.execute(f'UPDATE inventory SET count = \'{inventory[itemPosition][1] - countToDrop}\' WHERE CharId = {target.id} AND ItemId = {inventory[itemPosition][0]};')
+			await ctx.send(f'Dropped {countToDrop} of {itemData[0]}!')
+		else:
+			await ctx.send(f'You are not registered!')
+	
 def setup(bot):
 	bot.add_cog(ItemInteraction(bot))
