@@ -138,9 +138,6 @@ class Dev(commands.Cog):
 				self.bot.database.commit()
 				await ctx.send(f'Gave {target.mention} {countToAdd} of {itemName}')
 				myrefeldebug.DebugLog(f'{ctx.author} gave {target.mentions[0]} {countToAdd} of {itemName}')
-				#self.bot.database.execute(f'UPDATE chars SET Room = \'{roomId}\' WHERE Id = {target.id};')
-				#await ctx.send(f'Teleported {target.mention} to {itemName}')
-				#myrefeldebug.DebugLog(f'{ctx.author} teleported {target} to room {roomName}')
 			else:
 				await ctx.send(f'Invalid item id!')
 		else:
