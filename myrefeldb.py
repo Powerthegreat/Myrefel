@@ -22,9 +22,18 @@ def InitDB(database):
 			SecondRoom INT NOT NULL DEFAULT 0, \
 				CONSTRAINT FirstRoom FOREIGN KEY (FirstRoom) REFERENCES rooms(Id), \
 				CONSTRAINT SecondRoom FOREIGN KEY (SecondRoom) REFERENCES rooms(Id));')
-		database.execute('INSERT INTO world (Id, Version) VALUES (0, 1009);')
+		database.execute('CREATE TABLE items (Id INT NOT NULL, \
+			Name VARCHAR(255) NOT NULL DEFAULT \'\', \
+			Description VARCHAR(255) NOT NULL DEFAULT \'\');')
+		database.execute('CREATE TABLE inventory (CharId INT NOT NULL DEFAULT 0, \
+			ItemId INT NOT NULL DEFAULT 0, \
+			Count INT NOT NULL DEFAULT 0, \
+				CONSTRAINT CharId FOREIGN KEY (CharId) REFERENCES chars (Id), \
+				CONSTRAINT ItemId FOREIGN KEY (ItemId) REFERENCES items (Id));')
+		database.execute('INSERT INTO world (Id, Version) VALUES (0, 1010);')
 		AddRooms(database)
 		AddRoomConnections(database)
+		AddItems(database)
 	else:
 		# Update from 1000 to 1001 - adding room descriptions, added tavern room
 		if worldVersion[0][0] == 1000:
@@ -133,6 +142,19 @@ def InitDB(database):
 			database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
 				VALUES (9, 7);')
 			database.execute('UPDATE world SET Version = 1009 WHERE  Id = 0;')
+		# Update from 1009 to 1010 - adding items
+		if database.execute('SELECT Version FROM world WHERE Id = 0').fetchall()[0][0] == 1009:
+			database.execute('CREATE TABLE items (Id INT NOT NULL, \
+				Name VARCHAR(255) NOT NULL DEFAULT \'\', \
+				Description VARCHAR(255) NOT NULL DEFAULT \'\');')
+			database.execute('CREATE TABLE inventory (CharId INT NOT NULL DEFAULT 0, \
+				ItemId INT NOT NULL DEFAULT 0, \
+				Count INT NOT NULL DEFAULT 0, \
+					CONSTRAINT CharId FOREIGN KEY (CharId) REFERENCES chars (Id), \
+					CONSTRAINT ItemId FOREIGN KEY (ItemId) REFERENCES items (Id));')
+			database.execute('INSERT INTO items (Id, Name, Description) \
+				VALUES (0, \'Test Item\', \'A test item\');')
+			database.execute('UPDATE world SET Version = 1010 WHERE  Id = 0;')
 	database.commit()
 
 def AddRooms(database):
@@ -200,6 +222,10 @@ def AddRoomConnections(database):
 		VALUES (7, 9);')
 	database.execute('INSERT INTO roomconns (FirstRoom, SecondRoom) \
 		VALUES (9, 7);')
+
+def AddItems(database):
+	database.execute('INSERT INTO items (Id, Name, Description) \
+		VALUES (0, \'Test Item\', \'A test item\');')
 
 def GetPlayerData(self, playerId):
 	# Gets a player's data from the database
