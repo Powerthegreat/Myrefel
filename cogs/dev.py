@@ -67,12 +67,16 @@ class Dev(commands.Cog):
 		name='moveother',
 		description='Moves another user.',
 		aliases=['tpother', 'tpo'],
+		usage='<room id> <@target>',
 		hidden=True
 	)
 	@commands.is_owner()
 	async def moveother(self, ctx, *args):
 		# Teleports another player
-		if myrefeldb.GetPlayerData(self, ctx.author.id) != None:
+		if len(ctx.message.mentions) != 1:
+			await ctx.send('You must mention exactly one user to teleport.')
+			return
+		if myrefeldb.GetPlayerData(self, ctx.message.mentions[0].id) != None:
 			if not args:
 				await ctx.send('You must specify a room id.')
 				return
@@ -90,7 +94,7 @@ class Dev(commands.Cog):
 			else:
 				await ctx.send(f'Invalid room id!')
 		else:
-			await ctx.send('You are not registered!')
+			await ctx.send('The target is not registered!')
 	
 	@moveother.error
 	async def moveother_error(self, ctx, error):
