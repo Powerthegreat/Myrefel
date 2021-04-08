@@ -12,7 +12,8 @@ cogs = ['cogs.cog_management',
 	'cogs.account',
 	'cogs.world_interaction',
 	'cogs.player_interaction',
-	'cogs.dev'
+	'cogs.dev',
+	'cogs.item_interaction',
 ]
 
 welcomeMessages = [
