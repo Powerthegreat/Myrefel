@@ -137,7 +137,7 @@ class Dev(commands.Cog):
 						VALUES ({target.id}, {itemId}, {countToAdd});')
 				self.bot.database.commit()
 				await ctx.send(f'Gave {target.mention} {countToAdd} of {itemName}')
-				myrefeldebug.DebugLog(f'{ctx.author} gave {target.mentions[0]} {countToAdd} of {itemName}')
+				myrefeldebug.DebugLog(f'{ctx.author} gave {target} {countToAdd} of {itemName}')
 			else:
 				await ctx.send(f'Invalid item id!')
 		else:
