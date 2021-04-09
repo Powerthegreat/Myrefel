@@ -60,6 +60,9 @@ class ItemInteraction(commands.Cog):
 			countToDrop = 1
 			if len(args) > 1:
 				countToDrop = int(args[1])
+			if countToDrop < 1:
+				await ctx.send('Can\'t drop less than one item!')
+				return
 			inventory = self.bot.database.execute(f'SELECT ItemId, Count FROM inventory WHERE CharId = {target.id};').fetchall()
 			
 			if itemPosition >= len(inventory) or itemPosition < 0:

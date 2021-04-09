@@ -124,6 +124,9 @@ class Dev(commands.Cog):
 			countToAdd = 1
 			if len(args) > 2:
 				countToAdd = int(args[1])
+			if countToAdd < 1:
+				await ctx.send('Can\'t give less than one item!')
+				return
 			itemName = self.bot.database.execute(f'SELECT name FROM items WHERE Id = {itemId};').fetchall()
 			target = ctx.message.mentions[0]
 			if len(itemName) > 0:
