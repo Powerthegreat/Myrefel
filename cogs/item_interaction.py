@@ -73,6 +73,7 @@ class ItemInteraction(commands.Cog):
 			else:
 				self.bot.database.execute(f'UPDATE inventory SET count = \'{inventory[itemPosition][1] - countToDrop}\' WHERE CharId = {target.id} AND ItemId = {inventory[itemPosition][0]};')
 			await ctx.send(f'Dropped {countToDrop} of {itemData[0]}!')
+			myrefeldebug.DebugLog(f'{target} dropped {countToDrop} of {itemData[0]}')
 		else:
 			await ctx.send(f'You are not registered!')
 	

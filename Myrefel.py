@@ -28,6 +28,8 @@ status = cycle([
 # Displays a message when the bot loads, and loads cogs
 @bot.event
 async def on_ready():
+	logFile = open('log', 'w')
+	logFile.close()
 	myrefeldebug.DebugLog(welcomeMessages[random.randint(0, len(welcomeMessages) - 1)])
 	for cog in cogs:
 		bot.load_extension(cog)
